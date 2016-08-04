@@ -19,7 +19,7 @@ public class StudentQueueTest {
 
 		getImplementations();
 
-		// Fila com 3 elementos nÃ£o cheia.
+		// Fila com 3 elementos não cheia.
 		queue1.enqueue(1);
 		queue1.enqueue(2);
 		queue1.enqueue(3);
@@ -31,13 +31,13 @@ public class StudentQueueTest {
 	}
 
 	private void getImplementations() {
-		// TODO O aluno deve ajustar aqui para instanciar sua implementaÃ§Ã£o
+		// TODO O aluno deve ajustar aqui para instanciar sua implementação
 		queue1 = new QueueImpl<>(4);
 		queue2 = new QueueImpl<>(4);
 		queue3 = new QueueImpl<>(5);
 	}
 
-	// MÃ‰TODOS DE TESTE
+	// MÉTODOS DE TESTE
 	@Test
 	public void testHead() {
 		assertEquals(new Integer(1), queue1.head());
