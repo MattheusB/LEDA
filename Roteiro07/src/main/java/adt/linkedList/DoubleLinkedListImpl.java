@@ -61,16 +61,19 @@ public class DoubleLinkedListImpl<T> extends SingleLinkedListImpl<T> implements 
 			if (!isEmpty()) {
 				if (head.getData().equals(element)) {
 					head = head.next;
-				}
+					((DoubleLinkedListNode<T>) head).previous = nilNode;
 
-				DoubleLinkedListNode<T> aux = (DoubleLinkedListNode<T>) head;
-				while (!aux.getNext().isNIL()) {
-					aux = (DoubleLinkedListNode<T>) aux.next;
-					aux.previous = aux;
-				}
+				} else {
+					DoubleLinkedListNode<T> aux = (DoubleLinkedListNode<T>) head.next;
+					while (!aux.getNext().isNIL() && !aux.getData().equals(element)) {
+						aux = (DoubleLinkedListNode<T>) aux.next;
+					}
 
-				if (!aux.isNIL()) {
-					aux.previous.setNext(aux.getNext());
+					if (!aux.isNIL()) {
+						aux.previous.next = aux.next;
+						((DoubleLinkedListNode<T>) aux.next).previous = aux.previous;
+
+					}
 				}
 
 			}

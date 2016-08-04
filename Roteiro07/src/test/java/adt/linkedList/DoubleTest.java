@@ -236,6 +236,7 @@ public class DoubleTest {
 		list.insert(3);
 
 		list.remove(2);
+		System.out.println(list.head.next.next.getData());
 		Assert.assertTrue(list.head.next.next.getData() == 3);
 		Assert.assertTrue(list.last.previous.getData() == 1);
 
@@ -306,7 +307,7 @@ public class DoubleTest {
 		Assert.assertArrayEquals(new Integer[] {}, lista3.toArray());
 	}
 
-	// Métodos de DoubleLinkedList
+	// Mï¿½todos de DoubleLinkedList
 
 	@Test
 	public void testInsertFirst() {

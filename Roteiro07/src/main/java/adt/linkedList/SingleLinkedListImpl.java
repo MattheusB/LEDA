@@ -21,7 +21,12 @@ public class SingleLinkedListImpl<T> implements LinkedList<T> {
 	@Override
 	public int size() {
 		SingleLinkedListNode<T> aux = this.head;
+
 		int size = 0;
+		if (isEmpty()) {
+			return size;
+		}
+
 		while (!aux.isNIL()) {
 			size++;
 			aux = aux.next;
