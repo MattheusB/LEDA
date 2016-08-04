@@ -5,6 +5,10 @@ public class DoubleLinkedListImpl<T> extends SingleLinkedListImpl<T> implements 
 	protected DoubleLinkedListNode<T> last;
 	private DoubleLinkedListNode<T> nilNode = new DoubleLinkedListNode<>();
 
+	public DoubleLinkedListImpl() {
+		setLast(nilNode);
+	}
+
 	@Override
 	public void insertFirst(T element) {
 		if (element != null) {
@@ -14,6 +18,7 @@ public class DoubleLinkedListImpl<T> extends SingleLinkedListImpl<T> implements 
 				head = node;
 			} else {
 				node.next = head;
+				((DoubleLinkedListNode<T>) head).previous = node;
 				head = node;
 
 			}
@@ -26,15 +31,25 @@ public class DoubleLinkedListImpl<T> extends SingleLinkedListImpl<T> implements 
 	public void removeFirst() {
 		if (!isEmpty()) {
 			head = head.next;
+			((DoubleLinkedListNode<T>) head).previous = nilNode;
+
+			if (head.next == null) {
+				head.next = nilNode;
+				last = (DoubleLinkedListNode<T>) head;
+			}
 		}
 	}
 
 	@Override
 	public void removeLast() {
 		if (!isEmpty()) {
-			last.previous.next = (DoubleLinkedListNode<T>) last.next;
-			((DoubleLinkedListNode<T>) last.next).previous = last.previous;
 			last = last.previous;
+			last.next = nilNode;
+
+			if (last.previous == null || last.previous.isNIL()) {
+				last.previous = nilNode;
+				head = last;
+			}
 
 		}
 	}
@@ -63,16 +78,25 @@ public class DoubleLinkedListImpl<T> extends SingleLinkedListImpl<T> implements 
 					head = head.next;
 					((DoubleLinkedListNode<T>) head).previous = nilNode;
 
+					if (head.next == null) {
+						head.next = nilNode;
+						last = (DoubleLinkedListNode<T>) head;
+					}
+
 				} else {
+
 					DoubleLinkedListNode<T> aux = (DoubleLinkedListNode<T>) head.next;
-					while (!aux.getNext().isNIL() && !aux.getData().equals(element)) {
+
+					while (!aux.isNIL() && !aux.getData().equals(element)) {
 						aux = (DoubleLinkedListNode<T>) aux.next;
 					}
 
 					if (!aux.isNIL()) {
 						aux.previous.next = aux.next;
 						((DoubleLinkedListNode<T>) aux.next).previous = aux.previous;
-
+						if (aux.next.isNIL()) {
+							last = last.previous;
+						}
 					}
 				}
 

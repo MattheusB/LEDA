@@ -1,5 +1,7 @@
 package adt.linkedList;
 
+import java.util.Arrays;
+
 public class SingleLinkedListImpl<T> implements LinkedList<T> {
 
 	protected SingleLinkedListNode<T> head;
@@ -112,6 +114,11 @@ public class SingleLinkedListImpl<T> implements LinkedList<T> {
 		}
 		return array;
 
+	}
+
+	@Override
+	public String toString() {
+		return Arrays.toString(toArray());
 	}
 
 	public SingleLinkedListNode<T> getHead() {
