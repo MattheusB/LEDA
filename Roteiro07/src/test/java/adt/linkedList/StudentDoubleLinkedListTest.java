@@ -12,7 +12,7 @@ public class StudentDoubleLinkedListTest extends StudentLinkedListTest {
 
 	@Before
 	public void setUp() throws Exception {
-
+		super.setUp();
 		getImplementations();
 
 		// Lista com 3 elementos.
@@ -25,13 +25,13 @@ public class StudentDoubleLinkedListTest extends StudentLinkedListTest {
 	}
 
 	private void getImplementations() {
-		// TODO O aluno deve ajustar aqui para instanciar sua implementaÃ§Ã£o
-		lista1 = null;
-		lista2 = null;
-		lista3 = null;
+		// TODO O aluno deve ajustar aqui para instanciar sua implementação
+		lista1 = new DoubleLinkedListImpl<>();
+		lista2 = new DoubleLinkedListImpl<>();
+		lista3 = new DoubleLinkedListImpl<>();
 	}
 
-	// MÃ©todos de DoubleLinkedList
+	// Métodos de DoubleLinkedList
 
 	@Test
 	public void testInsertFirst() {
@@ -49,5 +49,6 @@ public class StudentDoubleLinkedListTest extends StudentLinkedListTest {
 	public void testRemoveLast() {
 		lista1.removeLast();
 		Assert.assertArrayEquals(new Integer[] { 3, 2 }, lista1.toArray());
+		
 	}
 }
