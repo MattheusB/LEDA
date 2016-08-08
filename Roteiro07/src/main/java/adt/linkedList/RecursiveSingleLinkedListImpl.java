@@ -1,10 +1,10 @@
 package adt.linkedList;
 
-public class SingleLinkedListImpl<T> implements LinkedList<T> {
+public class RecursiveSingleLinkedListImpl<T> implements LinkedList<T> {
 
 	protected SingleLinkedListNode<T> head;
 
-	public SingleLinkedListImpl() {
+	public RecursiveSingleLinkedListImpl() {
 		this.head = new SingleLinkedListNode<T>();
 
 	}
