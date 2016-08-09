@@ -1,0 +1,34 @@
+---------------------BEGIN----------------------
+InsertionSort
+Total of tests: 2082 | Total time: 3s |(SUCCESS)
+======================END=======================
+---------------------BEGIN----------------------
+InsertionSort
+Total of tests: 2123 | Total time: 3s |(SUCCESS)
+======================END=======================
+---------------------BEGIN----------------------
+SelectionSort
+Test(3) - leftIndex: -6 rightIndex: 1
+
+Input:    [-74, 93, -11, -56, -94, -84, 75]
+Expected: [-74, 93, -11, -56, -94, -84, 75]
+Obtained: java.lang.ArrayIndexOutOfBoundsException: -5
+
+Total of tests: 3 | Total time: 0s |(FAIL)
+======================END=======================
+---------------------BEGIN----------------------
+SelectionSort
+Total of tests: 2092 | Total time: 3s |(SUCCESS)
+======================END=======================
+---------------------BEGIN----------------------
+SelectionSort
+Total of tests: 2077 | Total time: 3s |(SUCCESS)
+======================END=======================
+---------------------BEGIN----------------------
+QuickSort
+Total of tests: 1085 | Total time: 3s |(SUCCESS)
+======================END=======================
+---------------------BEGIN----------------------
+MergeSort
+Total of tests: 1874 | Total time: 3s |(SUCCESS)
+======================END=======================

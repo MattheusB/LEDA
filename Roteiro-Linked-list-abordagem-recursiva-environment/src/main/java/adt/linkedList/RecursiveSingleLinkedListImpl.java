@@ -49,8 +49,6 @@ public class RecursiveSingleLinkedListImpl<T> implements LinkedList<T> {
 		return null;
 	}
 
-	// 1,4,5 9
-
 	@Override
 	public void insert(T element) {
 		if (element != null) {

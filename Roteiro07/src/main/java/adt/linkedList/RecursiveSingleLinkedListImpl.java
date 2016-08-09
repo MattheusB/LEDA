@@ -1,6 +1,12 @@
 package adt.linkedList;
 
+<<<<<<< HEAD:Roteiro07/src/main/java/adt/linkedList/RecursiveSingleLinkedListImpl.java
 public class RecursiveSingleLinkedListImpl<T> implements LinkedList<T> {
+=======
+import java.util.Arrays;
+
+public class SingleLinkedListImpl<T> implements LinkedList<T> {
+>>>>>>> 273104b81bdbc3f2a4947434d97cc69299ed3ad6:Roteiro07/src/main/java/adt/linkedList/SingleLinkedListImpl.java
 
 	protected SingleLinkedListNode<T> head;
 
@@ -21,7 +27,12 @@ public class RecursiveSingleLinkedListImpl<T> implements LinkedList<T> {
 	@Override
 	public int size() {
 		SingleLinkedListNode<T> aux = this.head;
+
 		int size = 0;
+		if (isEmpty()) {
+			return size;
+		}
+
 		while (!aux.isNIL()) {
 			size++;
 			aux = aux.next;
@@ -107,6 +118,11 @@ public class RecursiveSingleLinkedListImpl<T> implements LinkedList<T> {
 		}
 		return array;
 
+	}
+
+	@Override
+	public String toString() {
+		return Arrays.toString(toArray());
 	}
 
 	public SingleLinkedListNode<T> getHead() {
