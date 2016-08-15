@@ -20,12 +20,12 @@ public class HashtableOpenAddressQuadraticProbingImpl<T extends Storable> extend
 			} else {
 				int probe = 0;
 
-				int posicao = ((HashFunctionQuadraticProbing<T>) hashFunction).hash(element, probe);
+				int posicao = calculaPosicao(element, probe);
 
 				while (this.table[posicao] != null && !this.table[posicao].equals(new DELETED())) {
 					probe++;
 					this.COLLISIONS++;
-					posicao = ((HashFunctionQuadraticProbing<T>) hashFunction).hash(element, probe);
+					posicao = calculaPosicao(element, probe);
 				}
 
 				this.table[posicao] = element;
@@ -38,9 +38,9 @@ public class HashtableOpenAddressQuadraticProbingImpl<T extends Storable> extend
 	@Override
 	public void remove(T element) {
 		if (element != null) {
-			T novoElemento = search(element);
-			if (novoElemento != null) {
-				this.table[indexOf(element)] = new DELETED();
+			int index = indexOf(element);
+			if (index != -1) {
+				this.table[index] = new DELETED();
 				elements--;
 			}
 
@@ -65,14 +65,14 @@ public class HashtableOpenAddressQuadraticProbingImpl<T extends Storable> extend
 
 		if (element != null && !this.isEmpty()) {
 			int probe = 0;
-			int posicao = ((HashFunctionQuadraticProbing<T>) hashFunction).hash(element, probe);
+			int posicao = calculaPosicao(element, probe);
 
 			while (this.table[posicao] != null && probe < this.capacity()) {
 				if (this.table[posicao].equals(element)) {
 					return posicao;
 				} else {
 					probe++;
-					posicao = ((HashFunctionQuadraticProbing<T>) hashFunction).hash(element, probe);
+					posicao = calculaPosicao(element, probe);
 
 				}
 			}
@@ -81,4 +81,9 @@ public class HashtableOpenAddressQuadraticProbingImpl<T extends Storable> extend
 		return -1;
 
 	}
+
+	private int calculaPosicao(T element, int probe) {
+		return ((HashFunctionQuadraticProbing<T>) hashFunction).hash(element, probe);
+	}
+
 }
