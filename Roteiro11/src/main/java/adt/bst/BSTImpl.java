@@ -117,7 +117,13 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 				BSTNode<T> newNode = minimum((BSTNode<T>) node.getRight());
 				return newNode;
 			} else {
-				return (BSTNode<T>) node;
+				BTNode<T> ancestral = node.getParent();
+				while (ancestral != null && !node.equals(ancestral.getLeft())) {
+					ancestral = ancestral.getParent();
+					node = node.getParent();
+				}
+				return (BSTNode<T>) ancestral;
+
 			}
 		} else {
 			return null;
@@ -126,8 +132,23 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 
 	@Override
 	public BSTNode<T> predecessor(T element) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		BTNode<T> node = search(element);
+		if (element != null && !this.isEmpty()) {
+			if (!node.getLeft().isEmpty()) {
+				BSTNode<T> newNode = maximum((BSTNode<T>) node.getLeft());
+				return newNode;
+			} else {
+				BTNode<T> ancestral = node.getParent();
+				while (ancestral != null && !node.equals(ancestral.getRight())) {
+					ancestral = ancestral.getParent();
+					node = node.getParent();
+				}
+				return (BSTNode<T>) ancestral;
+			}
+		} else {
+			return null;
+		}
+
 	}
 
 	@Override
