@@ -120,7 +120,8 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 	private int preOrder(BTNode<T> node, T[] array, int index) {
 		if (!node.isEmpty()) {
 			array[index] = node.getData();
-			index = preOrder(node.getLeft(), array, ++index);
+			index++;
+			index = preOrder(node.getLeft(), array, index);
 			index = preOrder(node.getRight(), array, index);
 		}
 		return index;
@@ -128,8 +129,21 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 
 	@Override
 	public T[] order() {
-		// TODO Auto-generated method stub
-		throw new RuntimeException("Not implemented yet!");
+		T[] array = (T[]) new Comparable[this.size()];
+		order(this.root, array, 0);
+		return array;
+
+	}
+
+	private int order(BTNode<T> node, T[] array, int index) {
+		if (!node.isEmpty()) {
+			index = order(node.getLeft(), array, index);
+			array[index] = node.getData();
+			index = order(node.getRight(), array, ++index);
+
+		}
+		return index;
+
 	}
 
 	@Override
@@ -160,11 +174,19 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 		BSTImpl<Integer> bst = new BSTImpl<>();
 		bst.insert(new Integer(100));
 		bst.insert(new Integer(90));
-		bst.insert(new Integer(80));
+		bst.insert(new Integer(60));
+		bst.insert(new Integer(50));
+		bst.insert(new Integer(70));
 		bst.insert(new Integer(95));
-		bst.insert(new Integer(120));
+		bst.insert(new Integer(93));
+		bst.insert(new Integer(97));
+		bst.insert(new Integer(119));
 		bst.insert(new Integer(115));
-		bst.insert(new Integer(135));
+		bst.insert(new Integer(113));
+		bst.insert(new Integer(117));
+		bst.insert(new Integer(130));
+		bst.insert(new Integer(120));
+		bst.insert(new Integer(140));
 
 		System.out.println(Arrays.toString(bst.preOrder()));
 
