@@ -4,54 +4,116 @@ import java.util.Comparator;
 
 import adt.linkedList.DoubleLinkedList;
 import adt.linkedList.DoubleLinkedListNode;
-import adt.linkedList.SingleLinkedListNode;
 
 /**
  * Para testar essa classe voce deve implementar seu comparador. Primeiro
- * implemente todos os métodos requeridos. Depois implemente dois comparadores
- * (com idéias opostas) e teste sua classe com eles. Dependendo do comparador
- * que você utilizar a lista funcionar como ascendente ou descendente, mas a
- * implemntação dos métodos é a mesma.
+ * implemente todos os mÃ©todos requeridos. Depois implemente dois comparadores
+ * (com idÃ©ias opostas) e teste sua classe com eles. Dependendo do comparador
+ * que vocÃª utilizar a lista funcionar como ascendente ou descendente, mas a
+ * implemntaÃ§Ã£o dos mÃ©todos Ã© a mesma.
  * 
  * @author Adalberto
  *
  * @param <T>
  */
-public class OrderedDoubleLinkedListImpl<T> extends OrderedSingleLinkedListImpl<T> implements
-		OrderedLinkedList<T>,DoubleLinkedList<T> {
+public class OrderedDoubleLinkedListImpl<T> extends OrderedSingleLinkedListImpl<T> implements OrderedLinkedList<T>,
+      DoubleLinkedList<T> {
 
-	private DoubleLinkedListNode<T> previous;
+   private DoubleLinkedListNode<T> last;
 
-	public OrderedDoubleLinkedListImpl() {
-		// TODO Auto-generated constructor stub
-		throw new UnsupportedOperationException(
-				"Default constructor is not working yet!");
-	}
+   public OrderedDoubleLinkedListImpl() {
 
-	public OrderedDoubleLinkedListImpl(Comparator<T> comparator) {
-		super(comparator);
-	}
-	
-	/**
-	 * Este método faz sentido apenas se o elemento a ser inserido pode 
-	 * realmente ficar na primeira posição (devido a ordem)
-	 */
-	@Override
-	public void insertFirst(T element) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
-	}
+   }
 
-	@Override
-	public void removeFirst() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
-	}
+   public OrderedDoubleLinkedListImpl(Comparator<T> comparator) {
+      super(comparator);
+   }
 
-	@Override
-	public void removeLast() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
-	}
+   /**
+    * Este mÃ©todo faz sentido apenas se o elemento a ser inserido pode
+    * realmente ficar na primeira posiÃ§Ã£o (devido a ordem)
+    */
+   @Override
+   public void insertFirst(T element) {
+      if (element != null) {
+         DoubleLinkedListNode<T> node = new DoubleLinkedListNode<>(element, new DoubleLinkedListNode<>(),
+               new DoubleLinkedListNode<>());
+         if (isEmpty()) {
+
+            this.head = node;
+            this.last = node;
+         } else if (this.getComparator().compare(this.head.getData(), element) >= 0) {
+            node.setNext(this.head);
+            ((DoubleLinkedListNode<T>) this.head).setPrevious(node);
+            this.head = node;
+         }
+      }
+   }
+
+   @Override
+   public void removeFirst() {
+      if (!isEmpty()) {
+
+         if (this.size() == 1) {
+            this.head = new DoubleLinkedListNode<>();
+            this.last = new DoubleLinkedListNode<>();
+
+         } else {
+            DoubleLinkedListNode<T> aux = (DoubleLinkedListNode<T>) this.head.getNext();
+            aux.setPrevious(new DoubleLinkedListNode<>());
+            this.head = aux;
+
+            if (this.size() == 1) {
+               this.last = (DoubleLinkedListNode<T>) this.head;
+            }
+         }
+      }
+
+   }
+
+   @Override
+   public void removeLast() {
+      if (!isEmpty()) {
+         DoubleLinkedListNode<T> aux = this.last.getPrevious();
+
+         this.last = aux;
+         this.last.setNext(new DoubleLinkedListNode<>());
+
+      }
+
+   }
+
+   @Override
+   public void insert(T element) {
+      if (element != null) {
+         DoubleLinkedListNode<T> node = new DoubleLinkedListNode<>(element, new DoubleLinkedListNode<>(),
+               new DoubleLinkedListNode<>());
+         if (isEmpty()) {
+            this.head = node;
+            this.last = node;
+         } else {
+            if (this.getComparator().compare(element, this.head.getData()) < 0) {
+               insertFirst(element);
+            } else {
+               DoubleLinkedListNode<T> aux = (DoubleLinkedListNode<T>) this.head;
+
+               while (!aux.getNext().isNIL() && this.getComparator().compare(element, aux.getNext().getData()) >= 0) {
+                  aux = (DoubleLinkedListNode<T>) aux.getNext();
+               }
+               node.setNext(aux.getNext());
+               node.setPrevious(aux);
+
+               aux.setNext(node);
+               node.setPrevious(node);
+
+               if (node.getNext().isNIL()) {
+                  this.last = node;
+               }
+
+            }
+         }
+
+      }
+   }
 
 }

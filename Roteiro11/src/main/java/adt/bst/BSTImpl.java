@@ -116,17 +116,20 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 
 	@Override
 	public BSTNode<T> sucessor(T element) {
-		BTNode<T> node = search(element);
+
 		if (element != null && !this.isEmpty()) {
+			BTNode<T> node = search(element);
 			if (!node.getRight().isEmpty()) {
 				BSTNode<T> newNode = minimum((BSTNode<T>) node.getRight());
 				return newNode;
 			} else {
 				BTNode<T> ancestral = node.getParent();
-				while (ancestral != null && !node.equals(ancestral.getLeft())) {
+
+				while (ancestral != null && !ancestral.isEmpty() && !node.equals(ancestral.getLeft())) {
 					ancestral = ancestral.getParent();
 					node = node.getParent();
 				}
+
 				return (BSTNode<T>) ancestral;
 
 			}
@@ -144,7 +147,7 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 				return newNode;
 			} else {
 				BTNode<T> ancestral = node.getParent();
-				while (ancestral != null && !node.equals(ancestral.getRight())) {
+				while (ancestral != null && !ancestral.isEmpty() && !node.equals(ancestral.getRight())) {
 					ancestral = ancestral.getParent();
 					node = node.getParent();
 				}
@@ -269,6 +272,46 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 			indice++;
 		}
 		return indice;
+	}
+
+	public int contaNodes() {
+		return contaGrau2(this.root, 0);
+
+	}
+
+	private int contaFolhas(BTNode<T> node, int qtd) {
+		if (!node.isEmpty()) {
+			if (node.isLeaf()) {
+				qtd++;
+			}
+			qtd = contaFolhas(node.getLeft(), qtd);
+			qtd = contaFolhas(node.getRight(), qtd);
+		}
+		return qtd;
+	}
+
+	private int contaGrau1(BTNode<T> node, int qtd) {
+		if (!node.isEmpty()) {
+			if (!node.isLeaf()) {
+				if (node.getLeft().isEmpty() || node.getRight().isEmpty()) {
+					qtd++;
+				}
+			}
+			qtd = contaGrau1(node.getLeft(), qtd);
+			qtd = contaGrau1(node.getRight(), qtd);
+		}
+		return qtd;
+	}
+
+	private int contaGrau2(BTNode<T> node, int qtd) {
+		if (!node.isEmpty()) {
+			if (!node.getLeft().isEmpty() && !node.getRight().isEmpty()) {
+				qtd++;
+			}
+			qtd = contaGrau2(node.getLeft(), qtd);
+			qtd = contaGrau2(node.getRight(), qtd);
+		}
+		return qtd;
 	}
 
 	/**

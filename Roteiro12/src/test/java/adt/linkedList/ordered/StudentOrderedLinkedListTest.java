@@ -25,9 +25,10 @@ public class StudentOrderedLinkedListTest {
 
 	private void getImplementations() {
 		// TODO O aluno deve ajustar aqui para instanciar sua implementação
-		Comparator<Integer> comparador = null;
-		lista1 = null;
-		lista2 = null;
+		// Comparator<Integer> comparador = new Comparator<Integer>();
+
+		lista1 = new OrderedDoubleLinkedListImpl<>();
+		lista2 = new OrderedDoubleLinkedListImpl<>();
 	}
 
 	@Test
