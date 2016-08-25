@@ -66,7 +66,7 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
 	@Override
 	public T[] toArray() {
 		@SuppressWarnings("unchecked")
-		T[] resp = Util.makeArray(index + 1);
+		T[] resp = (T[]) new Comparable[(index + 1)];
 		for (int i = 0; i <= index; i++) {
 			resp[i] = this.heap[i];
 		}
@@ -83,13 +83,20 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
 		if (position >= 0 && !this.isEmpty()) {
 			int leftIndex = left(position);
 			int rightIndex = right(position);
+			int auxIndex = position;
 
-			if (leftIndex <= this.index && heap[position].compareTo(heap[leftIndex]) < 0) {
-				Util.swap(heap, position, leftIndex);
+			if (leftIndex <= this.index && this.comparator.compare(heap[auxIndex], heap[leftIndex]) < 0) {
+				auxIndex = leftIndex;
 			}
 
-			if (rightIndex <= this.index && heap[position].compareTo(heap[rightIndex]) < 0) {
-				Util.swap(heap, position, rightIndex);
+			if (rightIndex <= this.index && this.comparator.compare(heap[auxIndex], heap[leftIndex]) < 0) {
+				auxIndex = rightIndex;
+
+			}
+
+			if (position != auxIndex) {
+				Util.swap(heap, position, auxIndex);
+				heapify(auxIndex);
 			}
 		}
 
@@ -104,14 +111,25 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
 		// /////////////////////////////////////////////////////////////////
 
 		if (element != null) {
+			this.index++;
+			int i = index;
+			heap[this.index] = element;
+
+			while (i > 0 && this.comparator.compare(heap[i], heap[parent(i)]) > 0) {
+				Util.swap(heap, i, parent(i));
+				i = parent(i);
+
+			}
 
 		}
 	}
 
 	@Override
 	public void buildHeap(T[] array) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		if (array != null) {
+
+		}
+
 	}
 
 	@Override
@@ -122,8 +140,12 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
 
 	@Override
 	public T rootElement() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		if (this.isEmpty()) {
+			return null;
+		} else {
+			return this.heap[0];
+		}
+
 	}
 
 	@Override
@@ -134,8 +156,7 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		return this.index + 1;
 	}
 
 	public Comparator<T> getComparator() {
