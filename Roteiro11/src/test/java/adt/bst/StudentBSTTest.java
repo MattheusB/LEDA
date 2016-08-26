@@ -152,15 +152,22 @@ public class StudentBSTTest {
 		assertEquals(NIL, tree.search(2534));
 	}
 
-	/*@Test
-	public void leafsTeste() {
-		fillTree();
-		assertEquals(5, this.tree.contaNodes());
-	}*/
+	/*
+	 * @Test public void leafsTeste() { fillTree(); assertEquals(5,
+	 * this.tree.contaNodes()); }
+	 */
 
 	@Test
 	public void grau2Teste() {
 		fillTree();
 		assertEquals(4, this.tree.contaNodes());
+	}
+
+	@Test
+	public void passouTest() {
+		fillTree();
+
+		assertEquals(null, tree.predecessor(100));
+		assertEquals(null, tree.sucessor(100));
 	}
 }

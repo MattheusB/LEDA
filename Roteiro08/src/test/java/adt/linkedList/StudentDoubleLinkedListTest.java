@@ -1,5 +1,7 @@
 package adt.linkedList;
 
+import static org.junit.Assert.*;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,5 +51,21 @@ public class StudentDoubleLinkedListTest extends StudentLinkedListTest {
 	public void testRemoveLast() {
 		lista1.removeLast();
 		Assert.assertArrayEquals(new Integer[] { 3, 2 }, lista1.toArray());
+	}
+
+	@Test
+	public void passouTest() {
+		RecursiveDoubleLinkedListImpl<Integer> listaNova = new RecursiveDoubleLinkedListImpl<>();
+
+		assertEquals(null, listaNova.data);
+		assertEquals(null, listaNova.next);
+		assertEquals(null, listaNova.previous);
+
+		listaNova.insert(5);
+
+		assertEquals(new Integer(5), listaNova.data);
+		assertTrue(listaNova.next.isEmpty());
+		assertTrue(listaNova.previous.isEmpty());
+
 	}
 }
