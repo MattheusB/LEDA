@@ -1,11 +1,13 @@
 package adt.bst;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import adt.bst.BSTImpl;
 import adt.bt.BTNode;
 
 public class StudentBSTTest {
@@ -162,5 +164,70 @@ public class StudentBSTTest {
 	public void grau2Teste() {
 		fillTree();
 		assertEquals(4, this.tree.contaNodes());
+	}
+	@Test
+	public void testNodesPerLevel() {
+		BSTImpl<Integer> newTree = new BSTImpl<>();
+		
+		Assert.assertArrayEquals(new int[] {}, newTree.altura());
+		
+		
+		newTree.insert(new Integer(1));
+		Assert.assertArrayEquals(new int[] {1}, newTree.altura());
+		
+		
+		
+		fillTree();
+		Assert.assertEquals(4, this.tree.height());
+		Assert.assertArrayEquals(new int[] {1, 2, 4, 4, 1}, this.tree.altura());
+		
+		this.tree.insert(new Integer(-50));
+		Assert.assertArrayEquals(new int[] {1, 2, 4, 5, 1}, this.tree.altura());
+		
+		this.tree.insert(new Integer(8));
+		Assert.assertArrayEquals(new int[] {1, 2, 4, 6, 1}, this.tree.altura());
+		
+		this.tree.insert(new Integer(-38));
+		Assert.assertArrayEquals(new int[] {1, 2, 4, 7, 1}, this.tree.altura());
+		
+		this.tree.insert(new Integer(-100));
+		Assert.assertArrayEquals(new int[] {1, 2, 4, 7, 2}, this.tree.altura());
+		
+		this.tree.insert(new Integer(-45));
+		Assert.assertArrayEquals(new int[] {1, 2, 4, 7, 3}, this.tree.altura());
+		
+		this.tree.insert(new Integer(-39));
+		Assert.assertArrayEquals(new int[] {1, 2, 4, 7, 4}, this.tree.altura());
+		
+		this.tree.insert(new Integer(-36));
+		Assert.assertArrayEquals(new int[] {1, 2, 4, 7, 5}, this.tree.altura());
+		
+		this.tree.insert(new Integer(3));
+		Assert.assertArrayEquals(new int[] {1, 2, 4, 7, 6}, this.tree.altura());
+		
+		this.tree.insert(new Integer(7));
+		Assert.assertArrayEquals(new int[] {1, 2, 4, 7, 7}, this.tree.altura());
+		
+		this.tree.insert(new Integer(11));
+		Assert.assertArrayEquals(new int[] {1, 2, 4, 7, 8}, this.tree.altura());
+		
+		
+		this.tree.insert(new Integer(13));
+		Assert.assertArrayEquals(new int[] {1, 2, 4, 7, 9}, this.tree.altura());
+		
+		
+		this.tree.insert(new Integer(65));
+		Assert.assertArrayEquals(new int[] {1, 2, 4, 7, 10}, this.tree.altura());
+		
+
+		this.tree.insert(new Integer(68));
+		Assert.assertArrayEquals(new int[] {1, 2, 4, 7, 11}, this.tree.altura());
+		
+		this.tree.insert(new Integer(200));
+		Assert.assertArrayEquals(new int[] {1, 2, 4, 7, 12}, this.tree.altura());
+		
+		this.tree.insert(new Integer(240));
+		Assert.assertArrayEquals(new int[] {1, 2, 4, 7, 13}, this.tree.altura());
+		
 	}
 }

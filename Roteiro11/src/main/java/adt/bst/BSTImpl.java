@@ -1,5 +1,7 @@
 package adt.bst;
 
+import java.util.Arrays;
+
 import adt.bt.BTNode;
 
 public class BSTImpl<T extends Comparable<T>> implements BST<T> {
@@ -220,6 +222,13 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 		}
 	}
 
+	/*
+	 * private int preOrder(BTNode<T> node, T[] array, int indice) { if
+	 * (!node.isEmpty()) { array[indice] = node.getData(); indice++; indice =
+	 * preOrder(node.getLeft(), array, indice); indice =
+	 * preOrder(node.getRight(), array, indice); } return indice; }
+	 */
+
 	@Override
 	public T[] preOrder() {
 		T[] array = (T[]) new Comparable[this.size()];
@@ -272,46 +281,6 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 			indice++;
 		}
 		return indice;
-	}
-
-	public int contaNodes() {
-		return contaGrau2(this.root, 0);
-
-	}
-
-	private int contaFolhas(BTNode<T> node, int qtd) {
-		if (!node.isEmpty()) {
-			if (node.isLeaf()) {
-				qtd++;
-			}
-			qtd = contaFolhas(node.getLeft(), qtd);
-			qtd = contaFolhas(node.getRight(), qtd);
-		}
-		return qtd;
-	}
-
-	private int contaGrau1(BTNode<T> node, int qtd) {
-		if (!node.isEmpty()) {
-			if (!node.isLeaf()) {
-				if (node.getLeft().isEmpty() || node.getRight().isEmpty()) {
-					qtd++;
-				}
-			}
-			qtd = contaGrau1(node.getLeft(), qtd);
-			qtd = contaGrau1(node.getRight(), qtd);
-		}
-		return qtd;
-	}
-
-	private int contaGrau2(BTNode<T> node, int qtd) {
-		if (!node.isEmpty()) {
-			if (!node.getLeft().isEmpty() && !node.getRight().isEmpty()) {
-				qtd++;
-			}
-			qtd = contaGrau2(node.getLeft(), qtd);
-			qtd = contaGrau2(node.getRight(), qtd);
-		}
-		return qtd;
 	}
 
 	/**
