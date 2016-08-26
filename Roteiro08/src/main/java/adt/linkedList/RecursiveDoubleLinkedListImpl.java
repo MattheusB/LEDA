@@ -19,6 +19,8 @@ public class RecursiveDoubleLinkedListImpl<T> extends RecursiveSingleLinkedListI
 		if (element != null) {
 			if (isEmpty()) {
 				this.data = element;
+				this.next = new RecursiveDoubleLinkedListImpl<>();
+				this.previous = new RecursiveDoubleLinkedListImpl<>();
 			} else if (this.previous == null && this.next == null) {
 				RecursiveDoubleLinkedListImpl<T> aux = new RecursiveDoubleLinkedListImpl<>(this.data, this.next, this);
 				this.data = element;
@@ -37,14 +39,14 @@ public class RecursiveDoubleLinkedListImpl<T> extends RecursiveSingleLinkedListI
 	@Override
 	public void removeFirst() {
 		if (!isEmpty()) {
-			if (this.next == null) {
+			if (this.next.isEmpty()) {
 				this.data = null;
+				this.next = null;
+				this.previous = null;
 			} else {
 				this.data = this.next.data;
+				((RecursiveDoubleLinkedListImpl<T>) this.next.next).previous = this;
 				this.next = next.next;
-				if (this.next != null) {
-					((RecursiveDoubleLinkedListImpl<T>) this.next).previous = this;
-				}
 
 			}
 		}
@@ -54,11 +56,14 @@ public class RecursiveDoubleLinkedListImpl<T> extends RecursiveSingleLinkedListI
 	@Override
 	public void removeLast() {
 		if (!isEmpty()) {
-			if (this.next == null) {
-				if (this.previous == null) {
+			if (this.next.isEmpty()) {
+				if (this.previous.isEmpty()) {
 					this.data = null;
+					this.previous = null;
+					this.next = null;
+
 				} else {
-					this.previous.next = null;
+					this.previous.next = this.next;
 				}
 			} else {
 				((RecursiveDoubleLinkedListImpl<T>) this.next).removeLast();
@@ -98,9 +103,12 @@ public class RecursiveDoubleLinkedListImpl<T> extends RecursiveSingleLinkedListI
 		if (element != null) {
 			if (isEmpty()) {
 				this.data = element;
+				this.next = new RecursiveDoubleLinkedListImpl<>();
+				this.previous = new RecursiveDoubleLinkedListImpl<>();
 			} else if (this.next == null) {
 				RecursiveDoubleLinkedListImpl<T> aux = new RecursiveDoubleLinkedListImpl<>(element, null, this);
 				this.next = aux;
+
 			} else {
 				this.next.insert(element);
 
