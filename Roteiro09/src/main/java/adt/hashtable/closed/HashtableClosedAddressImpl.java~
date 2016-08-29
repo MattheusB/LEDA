@@ -1,0 +1,125 @@
+package adt.hashtable.closed;
+2   
+3   import util.Util;
+4   import adt.hashtable.hashfunction.HashFunction;
+5   import adt.hashtable.hashfunction.HashFunctionClosedAddressMethod;
+6   import adt.hashtable.hashfunction.HashFunctionFactory;
+7   import adt.hashtable.hashfunction.HashFunctionClosedAddress;
+8   import java.util.LinkedList;
+9   
+10  public class HashtableClosedAddressImpl<T> extends AbstractHashtableClosedAddress<T> {
+11  
+12  	/**
+13  	 * A hash table with closed address works with a hash function with closed
+14  	 * address. Such a function can follow one of these methods: DIVISION or
+15  	 * MULTIPLICATION. In the DIVISION method, it is useful to change the size
+16  	 * of the table to an integer that is prime. This can be achieved by
+17  	 * producing such a prime number that is bigger and close to the desired
+18  	 * size.
+19  	 * 
+20  	 * For doing that, you have auxiliary methods: Util.isPrime and
+21  	 * getPrimeAbove as documented bellow.
+22  	 * 
+23  	 * The length of the internal table must be the immediate prime number
+24  	 * greater than the given size. For example, if size=10 then the length must
+25  	 * be 11. If size=20, the length must be 23. You must implement this idea in
+26  	 * the auxiliary method getPrimeAbove(int size) and use it.
+27  	 * 
+28  	 * @param desiredSize
+29  	 * @param method
+30  	 */
+31  
+32  	@SuppressWarnings({ "rawtypes", "unchecked" })
+33  	public HashtableClosedAddressImpl(int desiredSize, HashFunctionClosedAddressMethod method) {
+34  		int realSize = desiredSize;
+35  
+36  		if (method == HashFunctionClosedAddressMethod.DIVISION) {
+37  			realSize = this.getPrimeAbove(desiredSize); // real size must the
+38  														// the immediate prime
+39  														// above
+40  		}
+41  		initiateInternalTable(realSize);
+42  		HashFunction function = HashFunctionFactory.createHashFunction(method, realSize);
+43  		this.hashFunction = function;
+44  	}
+45  
+46  	// AUXILIARY
+47  	/**
+48  	 * It returns the prime number that is closest (and greater) to the given
+49  	 * number. You can use the method Util.isPrime to check if a number is
+50  	 * prime.
+51  	 */
+52  	int getPrimeAbove(int number) {
+53  
+54  		int answer = number;
+55  		while (!Util.isPrime(answer)) {
+56  			answer += 1;
+57  		}
+58  		return answer;
+59  	}
+60  
+61  	@SuppressWarnings("unchecked")
+62  	@Override
+63  	public void insert(T element) {
+64  		if (element != null && search(element) == null) {
+65  
+66  			int hashKey = ((HashFunctionClosedAddress<T>) hashFunction).hash(element);
+67  
+68  			if (table[hashKey] == null) {
+69  				LinkedList<T> array = new LinkedList<>();
+70  				table[hashKey] = array;
+71  			}
+72  
+73  			if (!((LinkedList<T>) table[hashKey]).isEmpty()) {
+74  				COLLISIONS++;
+75  			}
+76  
+77  			((LinkedList<T>) table[hashKey]).add(element);
+78  			elements++;
+79  		}
+80  	}
+81  
+82  	@SuppressWarnings("unchecked")
+83  	@Override
+84  	public void remove(T element) {
+85  
+86  		if (element != null && search(element) != null) {
+87  			int hashKey = ((HashFunctionClosedAddress<T>) hashFunction).hash(element);
+88  			((LinkedList<T>) table[hashKey]).remove(element);
+89  			elements--;
+90  
+91  		}
+92  	}
+93  
+94  	@SuppressWarnings("unchecked")
+95  	@Override
+96  	public T search(T element) {
+97  
+98  		T answer = null;
+99  		if (element != null) {
+100 
+101 			int hashKey = ((HashFunctionClosedAddress<T>) hashFunction).hash(element);
+102 			if (table[hashKey] != null && ((LinkedList<T>) table[hashKey]).contains(element)) {
+103 				answer = element;
+104 			}
+105 
+106 		}
+107 		return answer;
+108 	}
+109 
+110 	@SuppressWarnings("unchecked")
+111 	@Override
+112 	public int indexOf(T element) {
+113 		int hash = -1;
+114 		if (element != null) {
+115 
+116 			int hashKey = ((HashFunctionClosedAddress<T>) hashFunction).hash(element);
+117 			if (table[hashKey] != null && ((LinkedList<T>) table[hashKey]).contains(element)) {
+118 				hash = hashKey;
+119 			}
+120 
+121 		}
+122 		return hash;
+123 	}
+124 
+125 }

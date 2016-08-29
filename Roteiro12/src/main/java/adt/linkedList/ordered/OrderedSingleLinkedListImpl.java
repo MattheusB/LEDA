@@ -16,8 +16,8 @@ import adt.linkedList.SingleLinkedListNode;
  *
  * @param <T>
  */
-public class OrderedSingleLinkedListImpl<T> extends SingleLinkedListImpl<T> implements
-		OrderedLinkedList<T> {
+public class OrderedSingleLinkedListImpl<T> extends SingleLinkedListImpl<T>
+		implements OrderedLinkedList<T> {
 
 	private Comparator<T> comparator;
 
