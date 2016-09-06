@@ -3,6 +3,7 @@ package adt.avltree;
 import adt.bst.BSTImpl;
 import adt.bst.BSTNode;
 import adt.bt.BTNode;
+import adt.bt.Util;
 
 /**
  * 
@@ -64,15 +65,7 @@ public class AVLTreeImpl<T extends Comparable<T>> extends BSTImpl<T> implements 
 	// AUXILIARY
 	protected void leftRotation(BSTNode<T> node) {
 
-		BTNode<T> aux = node.getRight();
-
-		node.setRight(aux.getLeft());
-		aux.getLeft().setParent(node);
-
-		aux.setParent(node.getParent());
-
-		aux.setLeft(node);
-		node.setParent(aux);
+		BSTNode<T> aux = Util.leftRotation(node);
 
 		if (node.equals(this.root)) {
 			this.root = (BSTNode<T>) node.getParent();
@@ -88,15 +81,7 @@ public class AVLTreeImpl<T extends Comparable<T>> extends BSTImpl<T> implements 
 	// AUXILIARY
 	protected void rightRotation(BSTNode<T> node) {
 
-		BTNode<T> aux = node.getLeft();
-
-		node.setLeft(aux.getRight());
-		aux.getRight().setParent(node);
-
-		aux.setParent(node.getParent());
-
-		aux.setRight(node);
-		node.setParent(aux);
+		BSTNode<T> aux = Util.rightRotation(node);
 
 		if (node.equals(this.root)) {
 			this.root = (BSTNode<T>) node.getParent();
