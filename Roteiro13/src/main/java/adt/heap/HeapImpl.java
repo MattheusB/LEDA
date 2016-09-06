@@ -166,18 +166,18 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
 		} else {
 
 			Comparator<T> comparatorAtual = this.comparator;
-			Comparator<T> newComparator = new Comparator<T>(){
+			Comparator<T> newComparator = new Comparator<T>() {
 
 				@Override
 				public int compare(T o1, T o2) {
 					return o2.compareTo(o1);
-				
+
 				}
-				
+
 			};
-			
+
 			setComparator(newComparator);
-			
+
 			buildHeap(array);
 
 			T[] aux = (T[]) new Comparable[array.length];
@@ -185,7 +185,7 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
 			for (int i = 0; i < heap.length; i++) {
 				aux[i] = this.extractRootElement();
 			}
-			
+
 			setComparator(comparatorAtual);
 
 			return aux;
