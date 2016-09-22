@@ -1,4 +1,4 @@
-/*
+
 package adt.rbtree;
 
 import static org.junit.Assert.*;
@@ -155,4 +155,3 @@ public class StudentTestRBTree {
 	}
 
 }
-*/
