@@ -5,201 +5,160 @@ import java.util.List;
 
 public class BTreeImpl<T extends Comparable<T>> implements BTree<T> {
 
-   protected BNode<T> root;
-   protected int order;
+	protected BNode<T> root;
+	protected int order;
 
-   public BTreeImpl(int order) {
-      this.order = order;
-      this.root = new BNode<T>(order);
-   }
+	public BTreeImpl(int order) {
+		this.order = order;
+		this.root = new BNode<T>(order);
+	}
 
-   @Override
-   public BNode<T> getRoot() {
-      return this.root;
-   }
+	@Override
+	public BNode<T> getRoot() {
+		return this.root;
+	}
 
-   @Override
-   public boolean isEmpty() {
-      return this.root.isEmpty();
-   }
+	@Override
+	public boolean isEmpty() {
+		return this.root.isEmpty();
+	}
 
-   @Override
-   public int height() {
-      return height(this.root);
-   }
+	@Override
+	public int height() {
+		return height(this.root);
+	}
 
-   private int height(BNode<T> node) {
-      if (node == null || node.isEmpty()) {
-         return 0;
-      } else if (node.isLeaf()) {
-         return 1;
-      } else {
-         return 1 + height(node.children.getFirst());
-      }
-   }
+	private int height(BNode<T> node) {
+		if (node == null || node.isEmpty()) {
+			return 0;
+		} else if (node.isLeaf()) {
+			return 1;
+		} else {
+			return 1 + height(node.children.getFirst());
+		}
+	}
 
-   @Override
-   public BNode<T>[] depthLeftOrder() {
+	@Override
+	public BNode<T>[] depthLeftOrder() {
 
-      BNode<T>[] array;
-      List<BNode<T>> cheatyList = new ArrayList<BNode<T>>();
+		BNode<T>[] array;
+		List<BNode<T>> lista = new ArrayList<BNode<T>>();
 
-      depthLeftOrderAuxMethod(cheatyList, this.root);
+		depthLeftOrderAuxMethod(lista, this.root);
 
-      array = new BNode[cheatyList.size()];
+		array = new BNode[lista.size()];
 
-      return cheatyList.toArray(array);
-   }
+		return lista.toArray(array);
+	}
 
-   private void depthLeftOrderAuxMethod(List<BNode<T>> list, BNode<T> node) {
+	private void depthLeftOrderAuxMethod(List<BNode<T>> list, BNode<T> node) {
 
-      if (!node.isEmpty()) {
+		if (!node.isEmpty()) {
 
-         list.add(node);
-         for (BNode<T> child : node.getChildren()) {
-            depthLeftOrderAuxMethod(list, child);
-         }
+			list.add(node);
+			for (BNode<T> child : node.getChildren()) {
+				depthLeftOrderAuxMethod(list, child);
+			}
 
-      }
+		}
 
-   }
+	}
 
-   @Override
-   public int size() {
+	@Override
+	public int size() {
+		return size(this.root);
+	}
 
-      return sizeAuxMethod(this.root);
-   }
+	protected int size(BNode<T> node) {
+		int tamanho = 0;
+		if (!node.isEmpty()) {
+			tamanho = tamanho + node.size();
+			for (BNode<T> aux : node.getChildren()) {
+				tamanho = tamanho + size(aux);
+			}
+		}
+		return tamanho;
+	}
 
-   private int sizeAuxMethod(BNode<T> node) {
+	@Override
+	public BNodePosition<T> search(T element) {
+		return search(element, this.root);
+	}
 
-      if (node == null || node.isEmpty()) {
-         return 0;
-      } else if (node.isLeaf()) {
-         return 1;
-      } else {
-         int amount = 1;
+	protected BNodePosition<T> search(T element, BNode<T> node) {
+		int indice = 0;
+		while (indice < node.size() && node.getElementAt(indice).compareTo(element) < 0) {
+			indice++;
+		}
+		if (indice < node.size() && node.getElementAt(indice).compareTo(element) == 0) {
+			return new BNodePosition<T>(node, indice);
+		} else if (node.isLeaf()) {
+			return new BNodePosition<T>();
+		} else {
+			return search(element, node.getChildren().get(indice));
+		}
+	}
 
-         for (BNode<T> child : node.getChildren()) {
-            amount += sizeAuxMethod(child);
-         }
+	@Override
+	public void insert(T element) {
+		insertAuxMethod(this.root, element);
 
-         return amount;
-      }
+	}
 
-   }
+	private void insertAuxMethod(BNode<T> node, T element) {
 
-   @Override
-   public BNodePosition<T> search(T element) {
-      return searchAuxMethod(element, this.root);
-   }
+		if (node.isLeaf()) {
+			node.addElement(element);
+			if (node.elements.size() > node.maxKeys) {
+				node.split();
+			}
 
-   private BNodePosition<T> searchAuxMethod(T element, BNode<T> node) {
+		} else {
 
-      int i = 0;
-      BNodePosition<T> itsPosition = new BNodePosition<T>();
+			int position = searchPositionInParent(node.getElements(), element);
 
-      for (T item : node.getElements()) {
+			insertAuxMethod(node.getChildren().get(position), element);
+		}
+	}
 
-         if (element.compareTo(item) == 0) {
+	private int searchPositionInParent(List<T> list, T mediana) {
+		int i = 0;
+		while (i < list.size()) {
+			if (list.get(i).compareTo(mediana) > 0) {
+				return i;
+			}
+			i++;
+		}
+		return list.size();
+	}
 
-            itsPosition.position = i;
-            itsPosition.node = node;
+	private void split(BNode<T> node) {
+		// TODO Implement your code here
+		throw new UnsupportedOperationException("Not Implemented yet!");
+	}
 
-            return itsPosition;
-         } else if (element.compareTo(item) < 0) {
+	private void promote(BNode<T> node) {
+		// TODO Implement your code here
+		throw new UnsupportedOperationException("Not Implemented yet!");
+	}
 
-            break;
-         }
+	// NAO PRECISA IMPLEMENTAR OS METODOS ABAIXO
+	@Override
+	public BNode<T> maximum(BNode<T> node) {
+		// NAO PRECISA IMPLEMENTAR
+		throw new UnsupportedOperationException("Not Implemented yet!");
+	}
 
-         i++;
+	@Override
+	public BNode<T> minimum(BNode<T> node) {
+		// NAO PRECISA IMPLEMENTAR
+		throw new UnsupportedOperationException("Not Implemented yet!");
+	}
 
-      }
-
-      if (node.isLeaf()) {
-         return new BNodePosition<T>();
-      }
-
-      else {
-         return searchAuxMethod(element, node.children.get(i));
-      }
-
-      /*
-      while(i <= node.elements.size() && element.compareTo(node.elements.get(i)) > 0) {
-      	i ++;
-      }
-      if(i <= node.elements.size() && element.equals(node.elements.get(i))) {
-      	nodPosition.position = i;
-      	nodPosition.node = node;
-      	return nodPosition;
-      }
-      if(node.isLeaf()) {
-      	return new BNodePosition<T>();
-      }
-      return searchAuxMethod(element, node.children.get(i));
-      
-       */
-   }
-
-   @Override
-   public void insert(T element) {
-      insertAuxMethod(this.root, element);
-
-   }
-
-   private void insertAuxMethod(BNode<T> node, T element) {
-
-      if (node.isLeaf()) {
-         node.addElement(element);
-         if (node.elements.size() > node.maxKeys) {
-            node.split();
-         }
-
-      } else {
-
-         int position = searchPositionInParent(node.getElements(), element);
-
-         insertAuxMethod(node.getChildren().get(position), element);
-      }
-   }
-
-   private int searchPositionInParent(List<T> list, T mediana) {
-      int i = 0;
-      while (i < list.size()) {
-         if (list.get(i).compareTo(mediana) > 0) {
-            return i;
-         }
-         i++;
-      }
-      return list.size();
-   }
-
-   private void split(BNode<T> node) {
-      // TODO Implement your code here
-      throw new UnsupportedOperationException("Not Implemented yet!");
-   }
-
-   private void promote(BNode<T> node) {
-      // TODO Implement your code here
-      throw new UnsupportedOperationException("Not Implemented yet!");
-   }
-
-   // NAO PRECISA IMPLEMENTAR OS METODOS ABAIXO
-   @Override
-   public BNode<T> maximum(BNode<T> node) {
-      // NAO PRECISA IMPLEMENTAR
-      throw new UnsupportedOperationException("Not Implemented yet!");
-   }
-
-   @Override
-   public BNode<T> minimum(BNode<T> node) {
-      // NAO PRECISA IMPLEMENTAR
-      throw new UnsupportedOperationException("Not Implemented yet!");
-   }
-
-   @Override
-   public void remove(T element) {
-      // NAO PRECISA IMPLEMENTAR
-      throw new UnsupportedOperationException("Not Implemented yet!");
-   }
+	@Override
+	public void remove(T element) {
+		// NAO PRECISA IMPLEMENTAR
+		throw new UnsupportedOperationException("Not Implemented yet!");
+	}
 
 }
