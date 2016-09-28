@@ -89,141 +89,128 @@ public class BNode<T extends Comparable<T>> {
 
 	protected void split() {
 
-		T middler = elements.get(elements.size() / 2);
+		T mediana = this.elements.get(this.elements.size() / 2);
 
-		int position;
-		int leftPosition;
-		int rightPosition;
+		BNode<T> left = new BNode<T>(maxChildren);
+		BNode<T> right = new BNode<T>(maxChildren);
 
-		BNode<T> largest = new BNode<T>(maxChildren);
-		BNode<T> smallest = new BNode<T>(maxChildren);
+		adicionaElementos(mediana, left, right);
 
-		LinkedList<BNode<T>> children = new LinkedList<BNode<T>>();
-
-		saveSomeElements(middler, largest, smallest);
-
-		if (parent == null && isLeaf()) {
+		if (this.parent == null && this.isLeaf()) {
 
 			setElements(new LinkedList<T>());
 
-			addElement(middler);
+			addElement(mediana);
 
-			addChild(0, smallest);
-			addChild(1, largest);
+			addChild(0, left);
+			addChild(1, right);
 		}
 
-		else if (parent == null && !this.isLeaf()) {
-			children = this.children;
+		else if (this.parent == null && !this.isLeaf()) {
+			LinkedList<BNode<T>> children = this.children;
 
 			setElements(new LinkedList<T>());
 
-			addElement(middler);
+			addElement(mediana);
 
 			setChildren(new LinkedList<BNode<T>>());
 
-			addChild(0, smallest);
-			addChild(1, largest);
+			addChild(0, left);
+			addChild(1, right);
 
-			sortOutChildren(children, smallest, 0, smallest.size() + 1);
-			sortOutChildren(children, largest, largest.size() + 1, children.size());
-		}
+			remakeChildren(children, left, 0, left.size() + 1);
+			remakeChildren(children, right, right.size() + 1, children.size());
+		} else if (this.isLeaf()) {
+			BNode<T> aux = new BNode<T>(maxChildren);
 
-		else if (this.isLeaf()) {
-			BNode<T> toPromove = new BNode<T>(maxChildren);
+			aux.elements.add(mediana);
+			aux.parent = parent;
 
-			toPromove.elements.add(middler);
-			toPromove.parent = parent;
+			left.parent = parent;
+			right.parent = parent;
 
-			smallest.parent = parent;
-			largest.parent = parent;
+			int posicao = positionParent(aux.parent.getElements(), mediana);
 
-			position = getPosInParent(toPromove.parent.getElements(), middler);
+			int leftPosition = posicao;
+			int rightPosition = posicao + 1;
 
-			leftPosition = position;
-			rightPosition = position + 1;
+			parent.children.set(leftPosition, left);
+			parent.children.add(rightPosition, right);
 
-			parent.children.set(leftPosition, smallest);
-			parent.children.add(rightPosition, largest);
-
-			toPromove.promote();
+			aux.promote();
 		} else {
+			LinkedList<BNode<T>> children = this.children;
 
-			children = this.children;
+			BNode<T> aux = new BNode<>(maxChildren);
 
-			BNode<T> toPromove = new BNode<>(maxChildren);
+			aux.elements.add(mediana);
+			aux.parent = parent;
 
-			toPromove.elements.add(middler);
-			toPromove.parent = parent;
+			left.parent = parent;
+			right.parent = parent;
 
-			smallest.parent = parent;
-			largest.parent = parent;
+			int posicao = positionParent(aux.getElements(), mediana);
 
-			position = getPosInParent(toPromove.getElements(), middler);
+			int leftPosition = posicao;
+			int rightPosition = posicao + 1;
 
-			leftPosition = position;
-			rightPosition = position + 1;
-
-			parent.children.add(leftPosition, smallest);
-			parent.children.add(rightPosition, largest);
+			parent.children.add(leftPosition, left);
+			parent.children.add(rightPosition, right);
 
 		}
+
+	}
+
+	private void adicionaElementos(T mediana, BNode<T> left, BNode<T> right) {
+
+		int indice = 0;
+
+		while (indice < getElements().size()) {
+
+			if (mediana.compareTo(getElementAt(indice)) < 0) {
+
+				left.addElement(getElementAt(indice));
+			}
+			if (mediana.compareTo(getElementAt(indice)) > 0) {
+
+				right.addElement(getElementAt(indice));
+			}
+			indice++;
+		}
+
 	}
 
 	protected void promote() {
 
-		int position = getPosInParent(parent.getElements(), getElementAt(0));
+		int posicao = positionParent(this.parent.getElements(), getElementAt(0));
 
-		parent.getElements().add(position, getElementAt(0));
+		this.parent.getElements().add(posicao, getElementAt(0));
 
-		if (parent.size() > maxKeys) {
+		if (this.parent.size() > this.maxKeys) {
 
-			parent.split();
+			this.parent.split();
 		}
 	}
 
-	private void saveSomeElements(T mediana, BNode<T> largest, BNode<T> smaller) {
+	private int positionParent(LinkedList<T> lista, T mediana) {
+		int indice = 0;
 
-		int i = 0;
+		while (indice < lista.size()) {
 
-		while (i < getElements().size()) {
+			if (lista.get(indice).compareTo(mediana) > 0) {
 
-			if (mediana.compareTo(getElementAt(i)) < 0) {
-
-				largest.addElement(getElementAt(i));
+				return indice;
 			}
-			if (mediana.compareTo(getElementAt(i)) > 0) {
-
-				smaller.addElement(getElementAt(i));
-			}
-			i++;
+			indice++;
 		}
+		return lista.size();
 	}
 
-	private int getPosInParent(LinkedList<T> list, T mediana) {
-		int i = 0;
-		while (i < list.size()) {
+	private void remakeChildren(LinkedList<BNode<T>> children, BNode<T> parent, int inicio, int fim) {
 
-			if (list.get(i).compareTo(mediana) > 0) {
-
-				return i;
-			}
-			i++;
-		}
-		return list.size();
-	}
-
-	private void sortOutChildren(LinkedList<BNode<T>> children, BNode<T> parent, int first, int last) {
-
-		int position;
-		int i = first;
-
-		while (i < last) {
-
-			position = getPosInParent(parent.getElements(), children.get(i).elements.get(0));
-
+		for (int i = inicio; i < fim; i++) {
+			int position = positionParent(parent.getElements(), children.get(i).elements.get(0));
 			parent.addChild(position, children.get(i));
-
-			i++;
 		}
 	}
 

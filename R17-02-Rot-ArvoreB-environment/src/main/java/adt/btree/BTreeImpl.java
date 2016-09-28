@@ -29,13 +29,14 @@ public class BTreeImpl<T extends Comparable<T>> implements BTree<T> {
 	}
 
 	private int height(BNode<T> node) {
-		if (node == null || node.isEmpty()) {
-			return 0;
-		} else if (node.isLeaf()) {
-			return 1;
-		} else {
-			return 1 + height(node.children.getFirst());
+		if (node != null || !node.isEmpty()) {
+			if (node.isLeaf()) {
+				return 1;
+			} else {
+				return 1 + height(node.children.getFirst());
+			}
 		}
+		return 0;
 	}
 
 	@Override
@@ -44,20 +45,20 @@ public class BTreeImpl<T extends Comparable<T>> implements BTree<T> {
 		BNode<T>[] array;
 		List<BNode<T>> lista = new ArrayList<BNode<T>>();
 
-		depthLeftOrderAuxMethod(lista, this.root);
+		depthLeftOrder(lista, this.root);
 
 		array = new BNode[lista.size()];
 
 		return lista.toArray(array);
 	}
 
-	private void depthLeftOrderAuxMethod(List<BNode<T>> list, BNode<T> node) {
+	private void depthLeftOrder(List<BNode<T>> lista, BNode<T> node) {
 
 		if (!node.isEmpty()) {
 
-			list.add(node);
-			for (BNode<T> child : node.getChildren()) {
-				depthLeftOrderAuxMethod(list, child);
+			lista.add(node);
+			for (BNode<T> aux : node.getChildren()) {
+				depthLeftOrder(lista, aux);
 			}
 
 		}
@@ -69,12 +70,12 @@ public class BTreeImpl<T extends Comparable<T>> implements BTree<T> {
 		return size(this.root);
 	}
 
-	protected int size(BNode<T> node) {
+	public int size(BNode<T> node) {
 		int tamanho = 0;
 		if (!node.isEmpty()) {
-			tamanho = tamanho + node.size();
-			for (BNode<T> aux : node.getChildren()) {
-				tamanho = tamanho + size(aux);
+			tamanho += node.size();
+			for (int i = 0; i < node.getChildren().size(); i++) {
+				tamanho += size(node.getChildren().get(i));
 			}
 		}
 		return tamanho;
@@ -92,54 +93,57 @@ public class BTreeImpl<T extends Comparable<T>> implements BTree<T> {
 		}
 		if (indice < node.size() && node.getElementAt(indice).compareTo(element) == 0) {
 			return new BNodePosition<T>(node, indice);
-		} else if (node.isLeaf()) {
-			return new BNodePosition<T>();
-		} else {
-			return search(element, node.getChildren().get(indice));
 		}
+		if (node.isLeaf()) {
+			return new BNodePosition<T>();
+		}
+		return search(element, node.getChildren().get(indice));
 	}
 
 	@Override
 	public void insert(T element) {
-		insertAuxMethod(this.root, element);
+		BNode<T> node = encontraFolha(element, this.root);
+		node.addElement(element);
 
+		while (node.getParent() != null) {
+			if (node.isFull()) {
+				split(node);
+				promote(node);
+			}
+
+			node = node.getParent();
+		}
+		if (node.isFull()) {
+			BNode<T> aux = new BNode<>(node.getMaxChildren());
+
+			aux.addChild(0, node);
+			node.setParent(aux);
+
+			this.root = aux;
+
+			split(node);
+			promote(node);
+		}
 	}
 
-	private void insertAuxMethod(BNode<T> node, T element) {
-
+	private BNode<T> encontraFolha(T element, BNode<T> node) {
+		int indice = 0;
+		while ((indice < node.size()) && (node.getElementAt(indice).compareTo(element) < 0)) {
+			indice++;
+		}
 		if (node.isLeaf()) {
-			node.addElement(element);
-			if (node.elements.size() > node.maxKeys) {
-				node.split();
-			}
-
-		} else {
-
-			int position = searchPositionInParent(node.getElements(), element);
-
-			insertAuxMethod(node.getChildren().get(position), element);
+			return node;
 		}
-	}
-
-	private int searchPositionInParent(List<T> list, T mediana) {
-		int i = 0;
-		while (i < list.size()) {
-			if (list.get(i).compareTo(mediana) > 0) {
-				return i;
-			}
-			i++;
-		}
-		return list.size();
+		return encontraFolha(element, node.getChildren().get(indice));
 	}
 
 	private void split(BNode<T> node) {
-		// TODO Implement your code here
-		throw new UnsupportedOperationException("Not Implemented yet!");
+		node.split();
 	}
 
 	private void promote(BNode<T> node) {
-		// TODO Implement your code here
-		throw new UnsupportedOperationException("Not Implemented yet!");
+		node.promote();
+
 	}
 
 	// NAO PRECISA IMPLEMENTAR OS METODOS ABAIXO
