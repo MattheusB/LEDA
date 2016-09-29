@@ -38,13 +38,9 @@ public class StudentSkipListTest {
 
 		array = skip.toArray();
 		if (((SkipListImpl<String>) skip).USE_MAX_HEIGHT_AS_HEIGHT) {
-			assertEquals(
-					"[<ROOT,4,4>, <0,1>, <5,3>, <10,2>, <15,3>, <20,1>, <NIL,4>]",
-					Arrays.toString(array));
+			assertEquals("[<ROOT,4,4>, <0,1>, <5,3>, <10,2>, <15,3>, <20,1>, <NIL,4>]", Arrays.toString(array));
 		} else {
-			assertEquals(
-					"[<ROOT,4,3>, <0,1>, <5,3>, <10,2>, <15,3>, <20,1>, <NIL,4>]",
-					Arrays.toString(array));
+			assertEquals("[<ROOT,4,3>, <0,1>, <5,3>, <10,2>, <15,3>, <20,1>, <NIL,4>]", Arrays.toString(array));
 		}
 		assertEquals(0, array[0].getForward(0).getKey());
 		assertEquals(5, array[0].getForward(1).getKey());
@@ -76,13 +72,9 @@ public class StudentSkipListTest {
 
 		array = skip.toArray();
 		if (((SkipListImpl<String>) skip).USE_MAX_HEIGHT_AS_HEIGHT) {
-			assertEquals(
-					"[<ROOT,4,4>, <0,1>, <5,3>, <10,2>, <15,3>, <20,1>, <NIL,4>]",
-					Arrays.toString(array));
+			assertEquals("[<ROOT,4,4>, <0,1>, <5,3>, <10,2>, <15,3>, <20,1>, <NIL,4>]", Arrays.toString(array));
 		} else {
-			assertEquals(
-					"[<ROOT,4,3>, <0,1>, <5,3>, <10,2>, <15,3>, <20,1>, <NIL,4>]",
-					Arrays.toString(array));
+			assertEquals("[<ROOT,4,3>, <0,1>, <5,3>, <10,2>, <15,3>, <20,1>, <NIL,4>]", Arrays.toString(array));
 		}
 
 		assertEquals(0, array[0].getForward(0).getKey());
@@ -137,7 +129,7 @@ public class StudentSkipListTest {
 		skip.insert(-2, "J", 1);
 
 		assertEquals(10, skip.size());
-		
+
 		skip.remove(10);
 		skip.remove(20);
 		skip.remove(0);
@@ -148,13 +140,9 @@ public class StudentSkipListTest {
 
 		array = skip.toArray();
 		if (((SkipListImpl<String>) skip).USE_MAX_HEIGHT_AS_HEIGHT) {
-			assertEquals(
-					"[<ROOT,4,4>, <-10,1>, <-2,1>, <9,2>, <17,2>, <30,3>, <NIL,4>]",
-					Arrays.toString(array));
+			assertEquals("[<ROOT,4,4>, <-10,1>, <-2,1>, <9,2>, <17,2>, <30,3>, <NIL,4>]", Arrays.toString(array));
 		} else {
-			assertEquals(
-					"[<ROOT,4,3>, <-10,1>, <-2,1>, <9,2>, <17,2>, <30,3>, <NIL,4>]",
-					Arrays.toString(array));
+			assertEquals("[<ROOT,4,3>, <-10,1>, <-2,1>, <9,2>, <17,2>, <30,3>, <NIL,4>]", Arrays.toString(array));
 		}
 		assertEquals(-10, array[0].getForward(0).getKey());
 		assertEquals(9, array[0].getForward(1).getKey());
