@@ -8,7 +8,7 @@ public class SkipListImpl<T> implements SkipList<T> {
 	protected int height;
 	protected int maxHeight;
 
-	protected boolean USE_MAX_HEIGHT_AS_HEIGHT = true;
+	protected boolean USE_MAX_HEIGHT_AS_HEIGHT;
 	protected double PROBABILITY = 0.5;
 
 	public SkipListImpl(int maxHeight) {
@@ -70,7 +70,7 @@ public class SkipListImpl<T> implements SkipList<T> {
 			SkipListNode<T> aux = this.root;
 			SkipListNode<T>[] update = new SkipListNode[this.maxHeight];
 
-			//Pesquisa
+			// Pesquisa
 			for (int i = height - 1; i >= 0; i--) {
 				while (key > aux.getForward(i).key) {
 					aux = aux.getForward(i);
@@ -81,8 +81,7 @@ public class SkipListImpl<T> implements SkipList<T> {
 
 			aux = aux.forward[0];
 
-			
-			//Adicao
+			// Adicao
 			if (aux.getKey() == key) {
 				aux.value = newValue;
 			} else {
@@ -107,8 +106,7 @@ public class SkipListImpl<T> implements SkipList<T> {
 			SkipListNode<T> aux = this.root;
 			SkipListNode<T>[] update = new SkipListNode[this.height];
 
-			
-			//Pesquisa
+			// Pesquisa
 			for (int i = height - 1; i >= 0; i--) {
 				while (key > aux.getForward(i).key) {
 					aux = aux.getForward(i);
@@ -119,8 +117,7 @@ public class SkipListImpl<T> implements SkipList<T> {
 
 			aux = aux.forward[0];
 
-			
-			//remocao
+			// remocao
 			if (aux.key == key) {
 				for (int i = 0; i < height; i++) {
 					if (!update[i].forward[i].equals(aux)) {
