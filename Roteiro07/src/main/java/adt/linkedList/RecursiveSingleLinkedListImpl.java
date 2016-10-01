@@ -1,12 +1,9 @@
 package adt.linkedList;
 
-<<<<<<< HEAD:Roteiro07/src/main/java/adt/linkedList/RecursiveSingleLinkedListImpl.java
-public class RecursiveSingleLinkedListImpl<T> implements LinkedList<T> {
-=======
 import java.util.Arrays;
 
-public class SingleLinkedListImpl<T> implements LinkedList<T> {
->>>>>>> 273104b81bdbc3f2a4947434d97cc69299ed3ad6:Roteiro07/src/main/java/adt/linkedList/SingleLinkedListImpl.java
+public class RecursiveSingleLinkedListImpl<T> implements LinkedList<T> {
+
 
 	protected SingleLinkedListNode<T> head;
 
