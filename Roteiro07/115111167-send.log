@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<head/><log>
+<record>
+  <date>2016-08-04T03:35:49.251-0300</date>
+  <logger>MATTHEUS BRITO RODRIGUES</logger>
+  <level>FINE</level>
+  <message>File 115111167-MATTHEUS BRITO RODRIGUES.zip was received. It was sent by MATTHEUS BRITO RODRIGUES from IP 192.168.15.50</message>
+</record>
+</log>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2016-08-04T03:45:29.292-0300</date>
+  <logger>MATTHEUS BRITO RODRIGUES</logger>
+  <level>FINE</level>
+  <message>File 115111167-MATTHEUS BRITO RODRIGUES.zip was received. It was sent by MATTHEUS BRITO RODRIGUES from IP 192.168.15.50</message>
+</record>
+<<<<<<< HEAD
+=======
+</log>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2016-08-04T18:03:53.666-0300</date>
+  <logger>MATTHEUS BRITO RODRIGUES</logger>
+  <level>FINE</level>
+  <message>File 115111167-MATTHEUS BRITO RODRIGUES.zip was received. It was sent by MATTHEUS BRITO RODRIGUES from IP 150.165.74.132</message>
+</record>
+>>>>>>> 273104b81bdbc3f2a4947434d97cc69299ed3ad6

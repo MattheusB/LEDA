@@ -8,44 +8,57 @@ import adt.bt.Util;
 public class SplayTreeImpl<T extends Comparable<T>> extends BSTImpl<T> implements SplayTree<T> {
 
 	private void splay(BSTNode<T> node) {
+
 		if (node != null && !node.isEmpty() && !node.equals(this.root)) {
 
-			if (node.getParent().equals(this.root)) {
-				if (node.getParent().getLeft().equals(node)) {
-					Util.rightRotation(this.root);
-				} else {
+			BSTNode<T> pai = (BSTNode<T>) node.getParent();
+			BSTNode<T> avo = (BSTNode<T>) node.getParent().getParent();
+
+			while (pai != null) {
+
+				if (pai.equals(this.root) && pai.getRight().equals(node)) {
 					Util.leftRotation(this.root);
+					this.root = node;
 				}
-				this.root = node;
-			}
 
-			else if (node.getParent().getParent().getRight().equals(node.getParent())) {
-				if (node.getParent().getRight().equals(node)) {
+				else if (pai.equals(this.root) && pai.getLeft().equals(node)) {
+					Util.rightRotation(this.root);
+					this.root = node;
 
+				}
+
+				else if (avo.getRight().equals(pai) && pai.getRight().equals(node)) {
 					Util.leftRotation((BSTNode<T>) node.getParent().getParent());
 					Util.leftRotation((BSTNode<T>) node.getParent());
-				} else {
-					Util.rightRotation((BSTNode<T>) node.getParent());
-					Util.leftRotation((BSTNode<T>) node.getParent());
-
 				}
-			} else if (node.getParent().getParent().getLeft().equals(node.getParent())) {
-				if (node.getParent().getLeft().equals(node)) {
+
+				else if (avo.getLeft().equals(pai) && pai.getLeft().equals(node)) {
 					Util.rightRotation((BSTNode<T>) node.getParent().getParent());
 					Util.rightRotation((BSTNode<T>) node.getParent());
-				} else {
-					Util.leftRotation((BSTNode<T>) node.getParent());
-					Util.rightRotation((BSTNode<T>) node.getParent());
-
 				}
 
-			}
+				else if (avo.getRight().equals(pai) && pai.getLeft().equals(node)) {
+					Util.rightRotation((BSTNode<T>) node.getParent());
+					Util.leftRotation((BSTNode<T>) node.getParent().getParent());
+				}
 
-			if (node.getParent() == null) {
-				this.root = node;
-			}
+				else if (avo.getLeft().equals(pai) && pai.getRight().equals(node)) {
+					Util.leftRotation((BSTNode<T>) node.getParent());
+					Util.rightRotation((BSTNode<T>) node.getParent().getParent());
+				}
 
-			splay(node);
+				pai = (BSTNode<T>) node.getParent();
+
+				if (pai != null) {
+					avo = (BSTNode<T>) pai.getParent();
+
+					if (avo == null) {
+						this.root = pai;
+					} else {
+						this.root = node;
+					}
+				}
+			}
 
 		}
 
@@ -54,13 +67,12 @@ public class SplayTreeImpl<T extends Comparable<T>> extends BSTImpl<T> implement
 	@Override
 	public void insert(T element) {
 		if (element != null) {
-			BSTNode<T> node = insert(element, this.root);
-			splay(node);
+			insert(element, this.root);
 		}
 
 	}
 
-	private BSTNode<T> insert(T element, BTNode<T> node) {
+	private void insert(T element, BTNode<T> node) {
 		if (node.isEmpty()) {
 			node.setData(element);
 
@@ -70,60 +82,48 @@ public class SplayTreeImpl<T extends Comparable<T>> extends BSTImpl<T> implement
 			node.getLeft().setParent(node);
 			node.getRight().setParent(node);
 
-			return (BSTNode<T>) node;
+			if (node.getParent() != null) {
+				splay((BSTNode<T>) node);
+			}
 
 		} else if (element.compareTo(node.getData()) < 0) {
-			return insert(element, node.getLeft());
+			insert(element, node.getLeft());
 
 		} else {
-			return insert(element, node.getRight());
+			insert(element, node.getRight());
 		}
 
 	}
 
 	@Override
 	public BSTNode<T> search(T element) {
-
-		if (element != null) {
-
-			BTNode<T> aux = this.root;
-			while (!aux.isEmpty()) {
-
-				if (aux.getData().compareTo(element) == 0) {
-					splay((BSTNode<T>) aux);
-					return (BSTNode<T>) aux;
-				} else if (aux.getData().compareTo(element) < 0) {
-					aux = aux.getRight();
-				}
-
-				else {
-					aux = aux.getLeft();
-				}
-			}
-			if (aux.getParent() != null)
+		if (element != null && !this.root.isEmpty()) {
+			BSTNode<T> aux = super.search(this.root, element);
+			if (aux.isEmpty()) {
 				splay((BSTNode<T>) aux.getParent());
+			} else {
+				splay(aux);
+			}
+
+			return aux;
 		}
-		return new BSTNode<>();
+		return new BSTNode<T>();
+
 	}
 
 	@Override
 	public void remove(T element) {
 
-		if (!this.isEmpty() && element != null) {
+		if (element != null && !this.isEmpty()) {
 
-			BTNode<T> aux = super.search(element);
+			BSTNode<T> node = super.search(element);
+			BSTNode<T> pai = (BSTNode<T>) node.getParent();
 
-			if (!aux.isEmpty()) {
-				BSTNode<T> parent = (BSTNode<T>) aux.getParent();
-				remove(aux);
-
-				if (parent != null) {
-					splay(parent);
-				}
-			} else {
-
-				splay((BSTNode<T>) aux.getParent());
+			if (element != null && node != null) {
+				super.remove(node);
 			}
+
+			splay(pai);
 		}
 	}
 
